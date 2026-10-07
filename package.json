@@ -1,0 +1,1 @@
+{"name":"treasury-intent-compiler","private":true,"scripts":{"test":"python -m pytest -q","build":"npm --prefix frontend run build"}}
