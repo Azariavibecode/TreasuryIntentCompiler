@@ -2,6 +2,8 @@
 
 **Live StudioNet contract:** [`0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186`](https://explorer-studio.genlayer.com/address/0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186)
 
+**Live dApp:** [treasury-intent-compiler.pages.dev](https://treasury-intent-compiler.pages.dev)
+
 TreasuryIntentCompiler is a GenLayer dApp that authenticates an immutable natural-language treasury mandate, verifies a sponsor-declared constraint envelope through bounded AI consensus, and deterministically evaluates an ordered transaction bundle before issuing a one-time permit.
 
 ## Why GenLayer
