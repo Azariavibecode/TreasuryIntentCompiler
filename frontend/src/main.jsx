@@ -5,7 +5,7 @@ import {studionet} from "genlayer-js/chains";
 import {ArrowUpRight, Check, Copy, ExternalLink, RefreshCw, ShieldCheck, WalletCards} from "lucide-react";
 import "./styles.css";
 
-const DEFAULT_CONTRACT = import.meta.env.VITE_CONTRACT_ADDRESS || "";
+const DEFAULT_CONTRACT = import.meta.env.VITE_CONTRACT_ADDRESS || "0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186";
 const EXPLORER = "https://explorer-studio.genlayer.com";
 const envelope = {allow_approval:false,allow_delegatecall:false,allowed_selectors:["0xa9059cbb"],asset:"0x2222222222222222222222222222222222222222",chain_id:1,max_total_raw:"8000000000",recipient:"0x3333333333333333333333333333333333333333",safe:"0x1111111111111111111111111111111111111111"};
 const emptyCounts = {mandate_count:0,bundle_count:0,permit_count:0,consumed_count:0};

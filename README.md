@@ -1,5 +1,7 @@
 # TreasuryIntentCompiler
 
+**Live StudioNet contract:** [`0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186`](https://explorer-studio.genlayer.com/address/0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186)
+
 TreasuryIntentCompiler is a GenLayer dApp that authenticates an immutable natural-language treasury mandate, verifies a sponsor-declared constraint envelope through bounded AI consensus, and deterministically evaluates an ordered transaction bundle before issuing a one-time permit.
 
 ## Why GenLayer
@@ -45,6 +47,8 @@ Deploy `contracts/TreasuryIntentCompiler.py` on StudioNet, then set `VITE_CONTRA
 5. If the bundle is permitted, wallet B consumes the permit. Refresh after every finalized transaction and inspect its Explorer link.
 
 The deployer is not required for any of these lifecycle actions. The bundle must come from the same GitHub owner/repository authority as its mandate, but the reviewer may register their own public repository and sources.
+
+See [StudioNet verification](verification/studionet-verification.md) for the finalized two-wallet happy, failure, conflict and adversarial transaction evidence.
 
 ## Scope not claimed
 

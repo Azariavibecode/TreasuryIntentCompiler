@@ -1,0 +1,154 @@
+{
+  "generated_at": "2026-10-07T02:46:27.030Z",
+  "network": "StudioNet",
+  "chain_id": 61999,
+  "contract": "0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186",
+  "explorer": "https://explorer-studio.genlayer.com/address/0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186",
+  "source_commit": "2ac7804b294f407d4d7e94a453e33b83a3864a71",
+  "wallets": [
+    "0x67A1A08Fc4cf7D05c859d0d3D8398a3A30B1677e",
+    "0x7C87B10a3d43F3b3551414401F8b26B9F662bAB5"
+  ],
+  "after": {
+    "bundle_count": 5,
+    "consumed_count": 1,
+    "mandate_count": 3,
+    "permit_count": 1
+  },
+  "mandate": {
+    "compile_code": "FAITHFUL",
+    "envelope": {
+      "allow_approval": false,
+      "allow_delegatecall": false,
+      "allowed_selectors": [
+        "0xa9059cbb"
+      ],
+      "asset": "0x2222222222222222222222222222222222222222",
+      "chain_id": 1,
+      "max_total_raw": "8000000000",
+      "recipient": "0x3333333333333333333333333333333333333333",
+      "safe": "0x1111111111111111111111111111111111111111"
+    },
+    "label": "e2e-treasury-permit",
+    "mandate_id": 1,
+    "source": {
+      "commit": "2ac7804b294f407d4d7e94a453e33b83a3864a71",
+      "digest": "f0fb4708fef9a6e3d27bc1522b7d8bcfa3f4176baef0718b3281c5ed0485b5ed",
+      "marker": "## MANDATE AUDIT-PAYMENT-001",
+      "owner": "Azariavibecode",
+      "path": "/fixtures/mandates/approved-transfer.md",
+      "repo": "TreasuryIntentCompiler"
+    },
+    "sponsor": "0x67a1a08fc4cf7d05c859d0d3d8398a3a30b1677e",
+    "state": "COMPILED"
+  },
+  "cases": [
+    {
+      "id": 0,
+      "kind": "exact",
+      "state": "CONSUMED",
+      "reason_code": "PERMITTED",
+      "hash": "571149bf7ca42fe7ba33ad3eadc327670dee79e376668d40eabfce7a2852cbe1"
+    },
+    {
+      "id": 1,
+      "kind": "over",
+      "state": "REJECTED",
+      "reason_code": "AMOUNT_EXCEEDED",
+      "hash": "c5422ed9be1689b7ac144f9ba51dad971d7f23cd7d7cf96a3f0efe3717b19c8d"
+    },
+    {
+      "id": 2,
+      "kind": "approval",
+      "state": "REJECTED",
+      "reason_code": "SELECTOR_NOT_ALLOWED",
+      "hash": "a28f43f8ceb09f39ebbfbc53a08c663d0898bc238888c93c851ac9710bfa3cf8"
+    },
+    {
+      "id": 3,
+      "kind": "delegate",
+      "state": "REJECTED",
+      "reason_code": "DELEGATECALL_FORBIDDEN",
+      "hash": "42cbd342488fb227f8f53604cfb57f73dc1312cbd42311dd738d9b116877def0"
+    },
+    {
+      "id": 4,
+      "kind": "target",
+      "state": "REJECTED",
+      "reason_code": "TARGET_MISMATCH",
+      "hash": "10ff7ae6276521f29cda4f2bebf86ae78b8544ac3da022e3a374cb511b6a1c18"
+    }
+  ],
+  "poisoned_source_state": "DRAFT",
+  "transaction_hashes": [
+    "0xf830b041708dd5ac1fa77a3cc0bd3027cad572665b2339e91fd07546d89f9054",
+    "0x3710eb4247ff8b651842e46c43285fd7d906a300dba1a3cc36b34d7c3547816f",
+    "0x615c11f941dc63f25f7a03d247f7d3be1f171a4c8ed2e59685b2fb155b3aa362",
+    "0x0927fec917cf4bedb35910018dc5d9af3a8bfa4ba04ace0f72afd93050317abc",
+    "0x5ef5302776bbf48fd9c7c6965a717dd29d37bca689fb5ea464bdd38555c38bed",
+    "0x968999b0f52001a2f4f0837b13b12c709c2260dbc1ad8ba07b260149fb28c2f8",
+    "0x2b9c96ca7cc204599ad0800a13e4c6cfcd50f62f69a70db81fe8ab1c80b023b8",
+    "0x7169278491c4ab71495cefb867483f7a1734c3dd51225532c42f1fd870db35f0",
+    "0x4614fbe653e2c228b099f60e1d5783ad32cb74e5e5071ce237e70729658af826",
+    "0x395cca69bd2c37dfcab4531b611082bd3e6e80e7a3e9aa48eb7a1c3490078531",
+    "0x23bb442a6a2924dd7095a2be445aa98073e21d72b61cf2fccd67880389ebe0d1",
+    "0x00489c919d3ffd96687bf1ffdf608f41297620e0cb7aba6ebc10ceaa46f7b2a8",
+    "0xa6b8bd98e51983d6b968c893ed60eb989554534bfef7da0137e5d1af1ea8c540",
+    "0x0480f3dee26d5d16017bc03a65b90eda8198bca8b80ca476f00396c7b084f5f9",
+    "0xb5efc24408f643b7006982e70de935bc73b5c903b83e4d1b8dca979b49a53cd9",
+    "0x936494c722ab46ad8dd9dcdeff80389eb69729bbabdd86f15f0a88c167451e81",
+    "0xd2c4b70dca1ae8f0e354b09bda09069df4728ea3cd949716bd396a00027bfe2f",
+    "0x324f192bce7e91c2be6260d42b69acd67781ffcb8f172d74946156d65d66420b"
+  ],
+  "new_transactions": [
+    {
+      "label": "target_authenticate_5",
+      "hash": "0x00489c919d3ffd96687bf1ffdf608f41297620e0cb7aba6ebc10ceaa46f7b2a8",
+      "actor": "0x7C87B10a3d43F3b3551414401F8b26B9F662bAB5",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "target_authenticate_6",
+      "hash": "0xa6b8bd98e51983d6b968c893ed60eb989554534bfef7da0137e5d1af1ea8c540",
+      "actor": "0x7C87B10a3d43F3b3551414401F8b26B9F662bAB5",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "target_evaluate",
+      "hash": "0x0480f3dee26d5d16017bc03a65b90eda8198bca8b80ca476f00396c7b084f5f9",
+      "actor": "0x7C87B10a3d43F3b3551414401F8b26B9F662bAB5",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "failure_role_separation",
+      "hash": "0xb5efc24408f643b7006982e70de935bc73b5c903b83e4d1b8dca979b49a53cd9",
+      "actor": "0x67A1A08Fc4cf7D05c859d0d3D8398a3A30B1677e",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "conflict_source_authority",
+      "hash": "0x936494c722ab46ad8dd9dcdeff80389eb69729bbabdd86f15f0a88c167451e81",
+      "actor": "0x7C87B10a3d43F3b3551414401F8b26B9F662bAB5",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "failure_create_poisoned_source",
+      "hash": "0xd2c4b70dca1ae8f0e354b09bda09069df4728ea3cd949716bd396a00027bfe2f",
+      "actor": "0x67A1A08Fc4cf7D05c859d0d3D8398a3A30B1677e",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    },
+    {
+      "label": "failure_authenticate_poisoned_source",
+      "hash": "0x324f192bce7e91c2be6260d42b69acd67781ffcb8f172d74946156d65d66420b",
+      "actor": "0x67A1A08Fc4cf7D05c859d0d3D8398a3A30B1677e",
+      "status": "FINALIZED",
+      "result_name": "MAJORITY_AGREE"
+    }
+  ]
+}

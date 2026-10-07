@@ -1,1 +1,1 @@
-{"name":"treasury-intent-compiler","private":true,"scripts":{"test":"python -m pytest -q","build":"npm --prefix frontend run build"}}
+{"name":"treasury-intent-compiler","private":true,"scripts":{"test":"python -m pytest -q","build":"npm --prefix frontend run build","e2e:studionet":"node scripts/run_studionet_e2e.mjs"}}
