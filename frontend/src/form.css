@@ -5,3 +5,4 @@
 .bundlehead span,.fieldtitle{font:700 10px 'Space Mono';letter-spacing:.08em;color:#6542c8}
 .fieldtitle{display:block;margin:14px 0 7px}
 .wide{width:100%;border:1px solid #dedbd2;border-radius:9px;padding:12px;margin-bottom:12px}
+.fieldrow{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.fieldrow .fieldtitle{margin:0}.fieldrow button{border:0;background:transparent;color:#6542c8;font-weight:700}.hint{font-size:12px;color:#777;margin:8px 0}
