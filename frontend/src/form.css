@@ -1,0 +1,7 @@
+.modebar,.bundlehead{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.modebar button,.bundlehead button{border:1px solid #d9d4c9;background:#f7f5ef;padding:9px 12px;border-radius:9px;font-weight:700}
+.modebar .selected{background:#17153e;color:#fff;border-color:#17153e}
+.bundlehead{justify-content:space-between;border-top:1px solid #ece9e2;padding-top:16px}
+.bundlehead span,.fieldtitle{font:700 10px 'Space Mono';letter-spacing:.08em;color:#6542c8}
+.fieldtitle{display:block;margin:14px 0 7px}
+.wide{width:100%;border:1px solid #dedbd2;border-radius:9px;padding:12px;margin-bottom:12px}

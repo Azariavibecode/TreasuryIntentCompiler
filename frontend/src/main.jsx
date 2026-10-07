@@ -4,6 +4,7 @@ import {createClient} from "genlayer-js";
 import {studionet} from "genlayer-js/chains";
 import {ArrowUpRight, Check, Copy, ExternalLink, RefreshCw, ShieldCheck, WalletCards} from "lucide-react";
 import "./styles.css";
+import "./form.css";
 
 const DEFAULT_CONTRACT = import.meta.env.VITE_CONTRACT_ADDRESS || "0x6414e50a09AB5d1cfF6fAa6bDcA96F40100f3186";
 const EXPLORER = "https://explorer-studio.genlayer.com";
@@ -21,6 +22,7 @@ function App(){
   const [mandate,setMandate]=useState(null); const [bundle,setBundle]=useState(null);
   const [label,setLabel]=useState("audit-payment"); const [envelopeText,setEnvelopeText]=useState(JSON.stringify(envelope,null,2));
   const [mandateSource,setMandateSource]=useState(""); const [bundleSource,setBundleSource]=useState("");
+  const [newMandate,setNewMandate]=useState(false); const [newBundle,setNewBundle]=useState(false);
   const [busy,setBusy]=useState(""); const [notice,setNotice]=useState("Connect a wallet to begin."); const [tx,setTx]=useState("");
   const [chainId,setChainId]=useState("");
   const reader=useMemo(()=>createClient({chain:studionet}),[]);
@@ -33,18 +35,19 @@ function App(){
     setAccount(address); setChainId(chain||"");
     setNotice(chain?.toLowerCase()==="0xf22f"?"Wallet connected to StudioNet.":"Connected. Switch wallet to StudioNet (61999) before writing.");
   }
-  async function refresh(){
+  async function refresh(ids={}){
     if(!valid)return; setBusy("refresh");
     try{
+      const activeMandate=ids.mandateId??mandateId; const activeBundle=ids.bundleId??bundleId;
       setCounts(parse(await reader.readContract({address:contract,functionName:"get_counts",args:[]}))||emptyCounts);
-      const nextMandate=parse(await reader.readContract({address:contract,functionName:"get_mandate",args:[BigInt(mandateId||0)]}));
-      const nextBundle=parse(await reader.readContract({address:contract,functionName:"get_bundle",args:[BigInt(bundleId||0)]}));
+      const nextMandate=parse(await reader.readContract({address:contract,functionName:"get_mandate",args:[BigInt(activeMandate||0)]}));
+      const nextBundle=parse(await reader.readContract({address:contract,functionName:"get_bundle",args:[BigInt(activeBundle||0)]}));
       setMandate(nextMandate?.error?null:nextMandate);
       setBundle(nextBundle?.error?null:nextBundle);
       setNotice("State synchronized from StudioNet.");
     }catch(e){setNotice(`Read unavailable: ${e.message}`)}finally{setBusy("")}
   }
-  async function write(method,args){
+  async function write(method,args,readIds={}){
     if(!account)return setNotice("Connect wallet first."); if(!valid)return setNotice("Set a valid contract address.");
     setBusy(method); setTx("");
     try{
@@ -58,7 +61,7 @@ function App(){
       const receipt=await reader.waitForTransactionReceipt({hash,status:"FINALIZED",interval:3000,retries:60});
       const status=receipt.status_name||receipt.status||"FINALIZED";
       if(status!=="FINALIZED")throw Error(`Transaction ended with ${status}`);
-      await refresh(); setNotice("Finalized successfully; UI reconciled from canonical contract state.");
+      await refresh(readIds); setNotice("Finalized successfully; UI reconciled from canonical contract state.");
     }catch(e){setNotice(`Transaction failed: ${e.message}`)}finally{setBusy("")}
   }
   useEffect(()=>{const provider=window.ethereum;if(!provider)return;const restore=async()=>{try{const [a,c]=await Promise.all([provider.request({method:"eth_accounts"}),provider.request({method:"eth_chainId"})]);setAccount(a?.[0]||"");setChainId(c||"")}catch{setNotice("Wallet reconnection is required.")}};const accountsChanged=a=>{setAccount(a?.[0]||"");setNotice(a?.[0]?"Wallet account changed.":"Wallet disconnected.")};const chainChanged=c=>{setChainId(c||"");setNotice(c?.toLowerCase()==="0xf22f"?"StudioNet detected.":"Wrong network. Switch to StudioNet (61999).");refresh()};restore();provider.on?.("accountsChanged",accountsChanged);provider.on?.("chainChanged",chainChanged);return()=>{provider.removeListener?.("accountsChanged",accountsChanged);provider.removeListener?.("chainChanged",chainChanged)}},[]);
@@ -70,18 +73,19 @@ function App(){
     <section className="contractbar"><div><small>ACTIVE CONTRACT</small><strong>{contract||"Paste deployment address"}</strong></div><input value={contract} onChange={e=>setContract(e.target.value.trim())} placeholder="0x…"/><a className={!valid?"disabled":""} href={valid?`${EXPLORER}/address/${contract}`:"#"} target="_blank">Explorer <ExternalLink size={14}/></a><button onClick={refresh}><RefreshCw size={15}/></button></section>
     <nav className="steps">{["Bind mandate","Compile intent","Inspect bundle","Consume permit"].map((s,i)=><div className={i<=stage?"active":""} key={s}><b>{i<stage?<Check size={14}/>:i+1}</b><span>{s}</span></div>)}</nav>
     <section className="grid">
-      <article className="panel"><p className="eyebrow">LIVE PROTOCOL</p><h3>Current objects</h3><div className="ids"><label>Mandate ID<input value={mandateId} onChange={e=>setMandateId(e.target.value.replace(/\D/g,""))}/></label><label>Bundle ID<input value={bundleId} onChange={e=>setBundleId(e.target.value.replace(/\D/g,""))}/></label></div>
+      <article className="panel"><p className="eyebrow">LIVE PROTOCOL</p><h3>Current objects</h3><div className="modebar"><button className={!newMandate?"selected":""} onClick={()=>{setNewMandate(false);setNewBundle(false);refresh()}}>Existing records</button><button className={newMandate?"selected":""} onClick={()=>{setNewMandate(true);setNewBundle(false)}}>+ New mandate</button></div><div className="ids"><label>Mandate ID<input value={mandateId} onChange={e=>{setNewMandate(false);setMandateId(e.target.value.replace(/\D/g,""))}}/></label><label>Bundle ID<input value={bundleId} onChange={e=>{setNewBundle(false);setBundleId(e.target.value.replace(/\D/g,""))}}/></label></div>
         <div className="object"><span>Mandate</span><strong className={`pill ${mandate?.state||""}`}>{mandate?.state||"NOT FOUND"}</strong><dl><dt>Sponsor</dt><dd>{short(mandate?.sponsor)}</dd><dt>Compile code</dt><dd>{mandate?.compile_code||"—"}</dd></dl></div>
         <div className="object"><span>Bundle</span><strong className={`pill ${bundle?.state||""}`}>{bundle?.state||"NOT FOUND"}</strong><dl><dt>Preparer</dt><dd>{short(bundle?.preparer)}</dd><dt>Decision</dt><dd>{bundle?.reason_code||"—"}</dd></dl></div>
       </article>
-      <article className="panel action"><p className="eyebrow">STATE-DRIVEN ACTION</p><h3>{!mandate?"Create a mandate":mandate.state==="DRAFT"?"Authenticate source":mandate.state==="SOURCE_BOUND"?"Compile constraints":!bundle?"Submit a bundle":bundle.state==="PROPOSED"?"Authenticate bundle":bundle.state==="SOURCE_BOUND"?"Evaluate calls":bundle.state==="PERMIT_READY"?"Consume permit":"Inspect final state"}</h3><p className="muted">The connected wallet determines the role. Sponsor and preparer must be different addresses.</p>
-        {!mandate&&<><input className="wide" value={label} onChange={e=>setLabel(e.target.value)} placeholder="Mandate label"/><textarea value={mandateSource} onChange={e=>setMandateSource(e.target.value)} placeholder='Mandate source JSON'/><textarea value={envelopeText} onChange={e=>setEnvelopeText(e.target.value)}/></>}
-        {mandate?.state==="COMPILED"&&!bundle&&<textarea value={bundleSource} onChange={e=>setBundleSource(e.target.value)} placeholder="Bundle source JSON"/>}
-        {mandate&&mandate.state!=="COMPILED"&&<textarea readOnly value={JSON.stringify(mandate.envelope||envelope,null,2)}/>}<div className="actions">
-          {!mandate&&<button className="primary" disabled={!!busy} onClick={()=>{if(!parse(mandateSource)||!parse(envelopeText))return setNotice("Source and envelope must be valid JSON.");write("create_mandate",[label,mandateSource,envelopeText])}}>Create mandate <ArrowUpRight size={16}/></button>}
+      <article className="panel action"><p className="eyebrow">STATE-DRIVEN ACTION</p><h3>{newMandate?"Create a new mandate":newBundle?"Submit a new bundle":!mandate?"Record not found":mandate.state==="DRAFT"?"Authenticate source":mandate.state==="SOURCE_BOUND"?"Compile constraints":mandate.state==="COMPILED"&&!bundle?"Submit a bundle":bundle?.state==="PROPOSED"?"Authenticate bundle":bundle?.state==="SOURCE_BOUND"?"Evaluate calls":bundle?.state==="PERMIT_READY"?"Consume permit":"Inspect final state"}</h3><p className="muted">The connected wallet determines the role. Sponsor and preparer must be different addresses.</p>
+        {newMandate&&<><input className="wide" value={label} onChange={e=>setLabel(e.target.value)} placeholder="Mandate label"/><label className="fieldtitle">Mandate source descriptor</label><textarea value={mandateSource} onChange={e=>setMandateSource(e.target.value)} placeholder='{"owner":"…","repo":"…","commit":"40-char SHA","path":"/…","digest":"SHA-256","marker":"unique heading"}'/><label className="fieldtitle">Constraint envelope</label><textarea value={envelopeText} onChange={e=>setEnvelopeText(e.target.value)}/></>}
+        {!newMandate&&mandate?.state==="COMPILED"&&<div className="bundlehead"><span>Bundle action</span><button onClick={()=>setNewBundle(value=>!value)}>{newBundle?"Cancel":"+ New bundle"}</button></div>}
+        {newBundle&&<><label className="fieldtitle">Bundle source descriptor</label><textarea value={bundleSource} onChange={e=>setBundleSource(e.target.value)} placeholder='{"owner":"…","repo":"…","commit":"40-char SHA","path":"/…","digest":"SHA-256","marker":"unique text"}'/></>}
+        {!newMandate&&!newBundle&&mandate&&mandate.state!=="COMPILED"&&<textarea readOnly value={JSON.stringify(mandate.envelope||envelope,null,2)}/>}<div className="actions">
+          {newMandate&&<button className="primary" disabled={!!busy} onClick={()=>{if(!parse(mandateSource)||!parse(envelopeText))return setNotice("Source and envelope must be valid JSON.");const id=String(counts.mandate_count);setMandateId(id);setNewMandate(false);write("create_mandate",[label,mandateSource,envelopeText],{mandateId:id})}}>Create mandate <ArrowUpRight size={16}/></button>}
           {mandate?.state==="DRAFT"&&<button className="primary" onClick={()=>write("authenticate_mandate",[BigInt(mandateId)])}>Authenticate mandate</button>}
           {mandate?.state==="SOURCE_BOUND"&&<button className="primary" onClick={()=>write("compile_mandate",[BigInt(mandateId)])}>Compile mandate</button>}
-          {mandate?.state==="COMPILED"&&!bundle&&<button className="primary" onClick={()=>{if(!parse(bundleSource))return setNotice("Bundle source must be valid JSON.");write("submit_bundle",[BigInt(mandateId),bundleSource])}}>Submit bundle source</button>}
+          {newBundle&&<button className="primary" onClick={()=>{if(!parse(bundleSource))return setNotice("Bundle source must be valid JSON.");const id=String(counts.bundle_count);setBundleId(id);setNewBundle(false);write("submit_bundle",[BigInt(mandateId),bundleSource],{bundleId:id})}}>Submit bundle source</button>}
           {bundle?.state==="PROPOSED"&&<button className="primary" onClick={()=>write("authenticate_bundle",[BigInt(bundleId)])}>Authenticate bundle</button>}
           {bundle?.state==="SOURCE_BOUND"&&<button className="primary" onClick={()=>write("evaluate_bundle",[BigInt(bundleId)])}>Evaluate bundle</button>}
           {bundle?.state==="PERMIT_READY"&&<button className="primary" onClick={()=>write("consume_permit",[BigInt(bundleId)])}>Consume one-time permit</button>}
